@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HTML 表单元素大全</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+pre {
+  margin: 0;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  white-space: pre;
+  overflow-x: auto;
+}
+.code-block {
+  max-height: 420px;
+  overflow-y: auto;
+}
+.nav-link {
+  transition: all 0.22s ease;
+}
+.nav-link:hover {
+  transform: translateX(4px);
+}
+.nav-link.active {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+.card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.gradient-bg {
+  background: radial-gradient(circle at top left, #e0e7ff, #fce7f3, #f7fee7);
+}
+.copy-btn {
+  transition: all 0.2s ease;
+}
+.copy-btn:hover {
+  transform: scale(1.05);
+}
+</style>
+</head>
+<body class="gradient-bg text-slate-800 h-screen overflow-hidden">
+  <div class="h-full flex flex-col">
+    <!-- 顶部栏 -->
+    <header class="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur border-b border-slate-200 shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-white text-lg font-bold">F</div>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">HTML 表单元素大全</h1>
+      </div>
+      <p class="text-sm text-slate-500">单页路由 · 查看示例与原生代码</p>
+    </header>
+    <!-- 主体区域 -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- 左侧彩色导航 -->
+      <aside class="w-56 lg:w-64 bg-white/70 backdrop-blur border-r border-slate-200 p-4 overflow-y-auto">
+        <h2 class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-3">表单分类</h2>
+        <nav id="nav" class="space-y-2">
+          <a href="#/" class="nav-link block px-4 py-2.5 rounded-lg bg-slate-50 text-slate-700 font-medium">🏠 首页</a>
+          <a href="#/input-text" class="nav-link block px-4 py-2.5 rounded-lg bg-blue-50 text-blue-700 font-medium">📝 单行输入框</a>
+          <a href="#/radio" class="nav-link block px-4 py-2.5 rounded-lg bg-violet-50 text-violet-700 font-medium">🔘 单选框</a>
+          <a href="#/checkbox" class="nav-link block px-4 py-2.5 rounded-lg bg-pink-50 text-pink-700 font-medium">✅ 复选框</a>
+          <a href="#/select" class="nav-link block px-4 py-2.5 rounded-lg bg-emerald-50 text-emerald-700 font-medium">📋 下拉选择</a>
+          <a href="#/textarea" class="nav-link block px-4 py-2.5 rounded-lg bg-orange-50 text-orange-700 font-medium">📄 多行文本</a>
+          <a href="#/button" class="nav-link block px-4 py-2.5 rounded-lg bg-red-50 text-red-700 font-medium">🔴 按钮</a>
+          <a href="#/file" class="nav-link block px-4 py-2.5 rounded-lg bg-cyan-50 text-cyan-700 font-medium">📁 文件上传</a>
+          <a href="#/hidden" class="nav-link block px-4 py-2.5 rounded-lg bg-gray-50 text-gray-700 font-medium">🙈 隐藏域</a>
+          <a href="#/fieldset" class="nav-link block px-4 py-2.5 rounded-lg bg-yellow-50 text-yellow-700 font-medium">🗂️ 表单分组</a>
+        </nav>
+      </aside>
+      <!-- 右侧内容区 -->
+      <main class="flex-1 overflow-hidden p-4 lg:p-6">
+        <div id="page-content" class="h-full overflow-y-auto pr-2 space-y-4"></div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // 将html特殊字符转义，用来在pre原样显示代码
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+    }
+
+    const routes = {
+      "/": {
+        title: "欢迎查看 HTML 表单元素",
+        demoHtml: `
+          <div class="text-center py-8">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center text-white text-2xl mb-4">F</div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">HTML Form Elements</h2>
+            <p class="text-slate-500 max-w-lg mx-auto">左侧选择表单类型：上方预览效果，下方展示源码文本。</p>
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-sm">
+              <div class="p-3 bg-blue-50 rounded-lg text-blue-700 font-medium">input</div>
+              <div class="p-3 bg-violet-50 rounded-lg text-violet-700 font-medium">radio</div>
+              <div class="p-3 bg-pink-50 rounded-lg text-pink-700 font-medium">checkbox</div>
+              <div class="p-3 bg-emerald-50 rounded-lg text-emerald-700 font-medium">select</div>
+              <div class="p-3 bg-orange-50 rounded-lg text-orange-700 font-medium">textarea</div>
+              <div class="p-3 bg-red-50 rounded-lg text-red-700 font-medium">button</div>
+            </div>
+          </div>`,
+        codeText: ""
+      },
+      "/input-text": {
+        title: "单行输入框 input type=\"text\"",
+        demoHtml: `
+          <form class="space-y-4 max-w-lg">
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">用户名</label>
+              <input type="text" name="username" placeholder="请输入用户名" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">密码</label>
+              <input type="password" name="pwd" placeholder="请输入密码" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">年龄</label>
+              <input type="number" name="age" value="18" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">邮箱</label>
+              <input type="email" name="email" placeholder="example@email.com" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            </div>
+          </form>`,
+        codeText: `<form>
+    用户名：<input type="text" name="username" placeholder="请输入用户名">
+    密码：<input type="password" name="pwd" placeholder="请输入密码">
+    年龄：<input type="number" name="age" value="18">
+    邮箱：<input type="email" name="email" placeholder="example@email.com">
+</form>`
+      },
+      "/radio": {
+        title: "单选框 input type=\"radio\"",
+        demoHtml: `
+          <form class="max-w-lg">
+            <label class="block text-sm font-medium text-slate-600 mb-2">性别</label>
+            <div class="flex items-center gap-4">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="gender" value="man" checked class="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
+                <span>男</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="gender" value="woman" class="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
+                <span>女</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="gender" value="other" class="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500" />
+                <span>保密</span>
+              </label>
+            </div>
+          </form>`,
+        codeText: `<form>
+    <p>性别</p>
+    <input type="radio" name="gender" value="man" checked>男
+    <input type="radio" name="gender" value="woman">女
+    <input type="radio" name="gender" value="other">保密
+</form>`
+      },
+      "/checkbox": {
+        title: "复选框 input type=\"checkbox\"",
+        demoHtml: `
+          <form class="max-w-lg">
+            <label class="block text-sm font-medium text-slate-600 mb-2">爱好</label>
+            <div class="flex flex-wrap gap-4">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="hobby" value="game" checked class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500 rounded" />
+                <span>游戏</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="hobby" value="read" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500 rounded" />
+                <span>看书</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="hobby" value="sport" class="w-4 h-4 text-emerald-600 border-slate-300 focus:ring-emerald-500 rounded" />
+                <span>运动</span>
+              </label>
+            </div>
+          </form>`,
+        codeText: `<form>
+    <p>爱好</p>
+    <input type="checkbox" name="hobby" value="game" checked>游戏
+    <input type="checkbox" name="hobby" value="read">看书
+    <input type="checkbox" name="hobby" value="sport">运动
+</form>`
+      },
+      "/select": {
+        title: "下拉选择框 select + option",
+        demoHtml: `
+          <form class="space-y-4 max-w-lg">
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">所在城市</label>
+              <select name="city" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                <option value="">请选择城市</option>
+                <option value="bj">北京</option>
+                <option value="sz" selected>深圳</option>
+                <option value="sh">上海</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">喜欢的水果（按住 Ctrl 多选）</label>
+              <select name="like" multiple size="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                <option value="apple">苹果</option>
+                <option value="banana">香蕉</option>
+                <option value="orange">橙子</option>
+              </select>
+            </div>
+          </form>`,
+        codeText: `<form>
+    <p>所在城市：</p>
+    <select name="city">
+        <option value="">请选择城市</option>
+        <option value="bj">北京</option>
+        <option value="sz" selected>深圳</option>
+        <option value="sh">上海</option>
+    </select>
+    <p>喜欢的水果：</p>
+    <select name="like" multiple size="3">
+        <option value="apple">苹果</option>
+        <option value="banana">香蕉</option>
+        <option value="orange">橙子</option>
+    </select>
+</form>`
+      },
+      "/textarea": {
+        title: "多行文本框 textarea",
+        demoHtml: `
+          <form class="max-w-lg">
+            <label class="block text-sm font-medium text-slate-600 mb-1">个人简介</label>
+            <textarea name="intro" rows="5" placeholder="请输入自我介绍" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">默认内容</textarea>
+          </form>`,
+        codeText: `<form>
+    <p>个人简介：</p>
+    <textarea name="intro" rows="5" cols="30" placeholder="请输入自我介绍">默认内容</textarea>
+</form>`
+      },
+      "/button": {
+        title: "按钮元素 button 和 input 按钮",
+        demoHtml: `
+          <form class="max-w-lg">
+            <div class="flex flex-wrap gap-3">
+              <input type="submit" value="提交表单" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" />
+              <input type="reset" value="重置表单" class="px-4 py-2 bg-slate-500 text-white rounded-lg hover:bg-slate-600 transition" />
+              <input type="button" value="普通按钮" onclick="alert('点击了按钮')" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition" />
+              <button type="button" class="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition">button 标签按钮</button>
+            </div>
+          </form>`,
+        codeText: `<form>
+    <input type="submit" value="提交表单">
+    <input type="reset" value="重置表单">
+    <input type="button" value="普通按钮" onclick="alert('点击了按钮')">
+    <button type="button">button 标签按钮</button>
+</form>`
+      },
+      "/file": {
+        title: "文件上传 input type=\"file\"",
+        demoHtml: `
+          <form enctype="multipart/form-data" class="space-y-4 max-w-lg">
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">选择文件</label>
+              <input type="file" name="file1" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-600 mb-1">多选文件</label>
+              <input type="file" multiple name="files" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100" />
+            </div>
+          </form>`,
+        codeText: `<form enctype="multipart/form-data">
+    <p>选择文件：</p>
+    <input type="file" name="file1">
+    <p>多选文件：</p>
+    <input type="file" multiple name="files">
+</form>`
+      },
+      "/hidden": {
+        title: "隐藏域 input type=\"hidden\"",
+        demoHtml: `
+          <form class="max-w-lg">
+            <p class="text-sm text-slate-500 mb-3">下面是隐藏域，页面中不可见，但提交时会传给后端。</p>
+            <input type="hidden" name="userId" value="10086" />
+            <input type="submit" value="提交查看" class="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition" />
+          </form>`,
+        codeText: `<form>
+    <input type="hidden" name="userId" value="10086">
+    <input type="submit" value="提交查看">
+</form>`
+      },
+      "/fieldset": {
+        title: "表单分组 fieldset + legend",
+        demoHtml: `
+          <form class="space-y-4 max-w-lg">
+            <fieldset class="border border-slate-300 p-4 rounded-xl">
+              <legend class="px-2 font-semibold text-blue-700">账号信息</legend>
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-sm font-medium text-slate-600 mb-1">账号</label>
+                  <input type="text" name="account" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-600 mb-1">密码</label>
+                  <input type="password" name="pass" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                </div>
+              </div>
+            </fieldset>
+            <fieldset class="border border-slate-300 p-4 rounded-xl">
+              <legend class="px-2 font-semibold text-emerald-700">个人信息</legend>
+              <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1">年龄</label>
+                <input type="number" name="age" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent" />
+              </div>
+            </fieldset>
+          </form>`,
+        codeText: `<form>
+    <fieldset>
+        <legend>账号信息</legend>
+        账号：<input type="text" name="account">
+        密码：<input type="password" name="pass">
+    </fieldset>
+    <fieldset>
+        <legend>个人信息</legend>
+        年龄：<input type="number" name="age">
+    </fieldset>
+</form>`
+      }
+    };
+
+    function getHashPath() {
+      let hash = location.hash.slice(1);
+      return hash || "/";
+    }
+
+    function renderPage() {
+      const path = getHashPath();
+      const page = routes[path] || routes["/"];
+      const contentWrap = document.getElementById("page-content");
+      document.querySelectorAll("#nav a").forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === "#" + path) {
+          link.classList.add("active");
+        }
+      });
+
+      let codeHtml = "";
+      if(page.codeText){
+        const displayCode = escapeHtml(page.codeText);
+        codeHtml = `
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-sm uppercase tracking-widest text-slate-400 font-semibold">原生HTML源代码</h3>
+                <button onclick="copyCode(this)" data-code="${encodeURIComponent(page.codeText)}" class="copy-btn px-3 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">复制代码</button>
+              </div>
+              <pre class="code-block bg-slate-900 text-green-400 p-4 rounded-xl"><code>${displayCode}</code></pre>
+            </div>`;
+      }
+
+      contentWrap.innerHTML = `
+        <div class="card rounded-2xl shadow-lg p-5 lg:p-6">
+          <h2 class="text-2xl font-bold text-slate-800 mb-4">${page.title}</h2>
+          <div class="mb-5">
+            <h3 class="text-sm uppercase tracking-widest text-slate-400 font-semibold mb-3">示例运行效果</h3>
+            <div class="border border-slate-200 rounded-xl p-5 bg-slate-50">
+              ${page.demoHtml}
+            </div>
+          </div>
+          ${codeHtml}
+        </div>`;
+    }
+
+    window.copyCode = async function (btn) {
+      const code = decodeURIComponent(btn.dataset.code);
+      await navigator.clipboard.writeText(code);
+      const originalText = btn.textContent;
+      btn.textContent = "已复制";
+      setTimeout(() => (btn.textContent = originalText), 1500);
+    };
+    window.addEventListener("hashchange", renderPage);
+    renderPage();
+  </script>
+  <!--
+    Copyright (c) 2026 DongXiang
+    Github: dxiangwiki
+    Email:3631247406@qq.com
+  -->
+</body>
+</html>
